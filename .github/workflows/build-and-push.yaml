@@ -43,10 +43,13 @@ jobs:
           images: ghcr.io/${{ github.repository }}
           tags: |
             type=raw,value=latest,enable=${{ github.event_name == 'release' }}
-            type=semver,pattern={{major}}.{{minor}}.{{patch}}
-            type=semver,pattern={{major}}.{{minor}}
-            type=semver,pattern={{major}}
+            type=semver,pattern={{major}}.{{minor}}.{{patch}},enable=${{ startsWith(github.ref, 'refs/tags/v') }}
+            type=semver,pattern={{major}}.{{minor}},enable=${{ startsWith(github.ref, 'refs/tags/v') }}
+            type=semver,pattern={{major}},enable=${{ startsWith(github.ref, 'refs/tags/v') }}
             type=ref,event=branch
+
+      - name: Log Docker metadata
+        run: echo "${{ steps.meta.outputs.tags }}"
 
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
@@ -60,7 +63,7 @@ jobs:
         uses: docker/build-push-action@v6
         with:
           context: .
-          push: ${{ github.ref == 'refs/heads/main' || github.event_name == 'release' }}
+          push: ${{ github.ref == 'refs/heads/main' || github.event_name == 'release' || startsWith(github.ref, 'refs/tags/') }}
           platforms: |
             linux/amd64
             linux/arm64/v8

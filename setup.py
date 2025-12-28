@@ -20,7 +20,7 @@ with open(path.join(pkg_dir, 'README.md'), encoding='utf-8') as f:
 
 setup(
     name='mktxp',
-    version='1.2.10',
+    version='1.2.16',
 
     url='https://github.com/akpw/mktxp',
 
@@ -50,11 +50,19 @@ setup(
                         'texttable>=1.6.3',
                         'speedtest-cli>=2.1.2',
                         'waitress>=3.0.0',
-                        'packaging>=24.0'
+                        'packaging>=24.0',
+                        'pyyaml>=5.1'
                         ],
 
     test_suite = 'tests',
 
+    extras_require={
+        'test': [
+            'pytest',
+            'pytest-mock',
+        ],
+    },
+    
     entry_points={'console_scripts': [
         'mktxp = mktxp.cli.dispatch:main',
     ]},

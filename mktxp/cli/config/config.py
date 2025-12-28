@@ -38,6 +38,7 @@ class CollectorKeys:
     INTERFACE_COLLECTOR = 'InterfaceCollector'
     FIREWALL_COLLECTOR = 'FirewallCollector'
     MONITOR_COLLECTOR = 'MonitorCollector'
+    W60G_COLLECTOR = 'W60gCollector'
     POE_COLLECTOR = 'POECollector'
     NETWATCH_COLLECTOR = 'NetwatchCollector'
     ROUTE_COLLECTOR = 'RouteCollector'
@@ -54,10 +55,12 @@ class CollectorKeys:
     GRE_COLLECTOR = 'GRECollector'
     IPIP_COLLECTOR = 'IPIPCollector'
     IPSEC_COLLECTOR = 'IPSecCollector'
+    ADDRESS_LIST_COLLECTOR = 'AddressListCollector'
     LTE_COLLECTOR = 'LTECollector'
     SWITCH_PORT_COLLECTOR = 'SwitchPortCollector'
     MKTXP_COLLECTOR = 'MKTXPCollector'
     CERTIFICATE_COLLECTOR = 'CertificateCollector'
+    CONTAINER_COLLECTOR = "ContainerCollector"
 
 
 class MKTXPConfigKeys:
@@ -70,10 +73,12 @@ class MKTXPConfigKeys:
     LISTEN_KEY = 'listen'
     USER_KEY = 'username'
     PASSWD_KEY = 'password'
+    CREDENTIALS_FILE_KEY = 'credentials_file'
 
     SSL_KEY = 'use_ssl'
     NO_SSL_CERTIFICATE = 'no_ssl_certificate'
     SSL_CERTIFICATE_VERIFY = 'ssl_certificate_verify'
+    SSL_CHECK_HOSTNAME = 'ssl_check_hostname'
     SSL_CA_FILE = 'ssl_ca_file'
     PLAINTEXT_LOGIN_KEY = 'plaintext_login'
 
@@ -88,15 +93,18 @@ class MKTXPConfigKeys:
     FE_ROUTE_KEY = 'route'
     FE_DHCP_POOL_KEY = 'pool'
     FE_FIREWALL_KEY = 'firewall'
+    FE_ADDRESS_LIST_KEY = 'address_list'
     FE_NEIGHBOR_KEY = 'neighbor'
     FE_DNS_KEY = 'dns'
 
     FE_IPV6_ROUTE_KEY = 'ipv6_route'
     FE_IPV6_DHCP_POOL_KEY = 'ipv6_pool'
     FE_IPV6_FIREWALL_KEY = 'ipv6_firewall'
+    FE_IPV6_ADDRESS_LIST_KEY = 'ipv6_address_list'
     FE_IPV6_NEIGHBOR_KEY = 'ipv6_neighbor'
 
     FE_MONITOR_KEY = 'monitor'
+    FE_W60G_KEY = 'w60g'
     FE_WIRELESS_KEY = 'wireless'
     FE_WIRELESS_CLIENTS_KEY = 'wireless_clients'
     FE_CAPSMAN_KEY = 'capsman'
@@ -124,9 +132,12 @@ class MKTXPConfigKeys:
 
     FE_KID_CONTROL_DEVICE = 'kid_control_assigned'
     FE_KID_CONTROL_DYNAMIC = 'kid_control_dynamic'
-    
+
+    FE_CONTAINER_KEY = 'container'
+
     FE_CERTIFICATE_KEY = 'certificate'
     FE_ROUTING_STATS_KEY = 'routing_stats'
+    FE_CUSTOM_LABELS_KEY = 'custom_labels'
 
     MKTXP_SOCKET_TIMEOUT = 'socket_timeout'
     MKTXP_INITIAL_DELAY = 'initial_delay_on_failure'
@@ -141,20 +152,29 @@ class MKTXPConfigKeys:
     MKTXP_MAX_SCRAPE_DURATION = 'max_scrape_duration'
     MKTXP_TOTAL_MAX_SCRAPE_DURATION = 'total_max_scrape_duration'
     MKTXP_COMPACT_CONFIG = 'compact_default_conf_values'
+    MKTXP_PROMETHEUS_HEADERS_DEDUPLICATION = 'prometheus_headers_deduplication'
+    MKTXP_PERSISTENT_ROUTER_CONNECTION_POOL = 'persistent_router_connection_pool'
+    MKTXP_PERSISTENT_DHCP_CACHE = 'persistent_dhcp_cache'
+    MKTXP_BANDWIDTH_TEST_DNS_SERVER = 'bandwidth_test_dns_server'
 
     # UnRegistered entries placeholder
     NO_ENTRIES_REGISTERED = 'NoEntriesRegistered'
 
-    MKTXP_USE_COMMENTS_OVER_NAMES = 'use_comments_over_names'
+    MKTXP_USE_COMMENTS_OVER_NAMES = 'use_comments_over_names'  # Legacy option, deprecated
+    FE_INTERFACE_NAME_FORMAT = 'interface_name_format'
 
     # Base router id labels
     ROUTERBOARD_NAME = 'routerboard_name'
     ROUTERBOARD_ADDRESS = 'routerboard_address'
 
+    # Injected custom labels metadata ID 
+    CUSTOM_LABELS_METADATA_ID = '__custom__labels__metadata_id__'
+
     # Default values    
     DEFAULT_HOST_KEY = 'localhost'
     DEFAULT_USER_KEY = 'user'
     DEFAULT_PASSWORD_KEY = 'password'
+    DEFAULT_CREDENTIALS_FILE_KEY = ""
 
     DEFAULT_SSL_CA_FILE = ""
 
@@ -162,6 +182,11 @@ class MKTXPConfigKeys:
     DEFAULT_API_SSL_PORT = 8729
     DEFAULT_FE_REMOTE_DHCP_ENTRY = 'None'
     DEFAULT_FE_REMOTE_CAPSMAN_ENTRY = 'None'
+    DEFAULT_FE_ADDRESS_LIST_KEY = 'None'
+    DEFAULT_FE_IPV6_ADDRESS_LIST_KEY = 'None'
+    DEFAULT_FE_CUSTOM_LABELS_KEY = 'None'
+    DEFAULT_FE_INTERFACE_NAME_FORMAT = 'name'
+
     DEFAULT_MKTXP_PORT = 49090
     DEFAULT_MKTXP_SOCKET_TIMEOUT = 2
     DEFAULT_MKTXP_INITIAL_DELAY = 120
@@ -172,22 +197,24 @@ class MKTXPConfigKeys:
     DEFAULT_MKTXP_MAX_WORKER_THREADS = 5
     DEFAULT_MKTXP_MAX_SCRAPE_DURATION = 10
     DEFAULT_MKTXP_TOTAL_MAX_SCRAPE_DURATION = 30
+    DEFAULT_MKTXP_BANDWIDTH_TEST_DNS_SERVER = "8.8.8.8"
 
 
     BOOLEAN_KEYS_NO = {ENABLED_KEY, SSL_KEY, NO_SSL_CERTIFICATE, FE_CHECK_FOR_UPDATES, FE_KID_CONTROL_DEVICE, FE_KID_CONTROL_DYNAMIC,
                        SSL_CERTIFICATE_VERIFY, FE_IPV6_ROUTE_KEY, FE_IPV6_DHCP_POOL_KEY, FE_IPV6_FIREWALL_KEY, FE_IPV6_NEIGHBOR_KEY, FE_CONNECTION_STATS_KEY, FE_BFD_KEY, FE_BGP_KEY,
-                       FE_EOIP_KEY, FE_GRE_KEY, FE_IPIP_KEY, FE_IPSEC_KEY, FE_LTE_KEY, FE_SWITCH_PORT_KEY, FE_ROUTING_STATS_KEY, FE_CERTIFICATE_KEY, FE_DNS_KEY}
+                       FE_EOIP_KEY, FE_GRE_KEY, FE_IPIP_KEY, FE_IPSEC_KEY, FE_LTE_KEY, FE_SWITCH_PORT_KEY, FE_ROUTING_STATS_KEY, FE_CERTIFICATE_KEY, FE_DNS_KEY, FE_CONTAINER_KEY, FE_W60G_KEY}
 
     # Feature keys enabled by default
     BOOLEAN_KEYS_YES = {PLAINTEXT_LOGIN_KEY, FE_DHCP_KEY, FE_HEALTH_KEY, FE_PACKAGE_KEY, FE_DHCP_LEASE_KEY, FE_IP_CONNECTIONS_KEY, FE_INTERFACE_KEY, 
-                        FE_ROUTE_KEY, FE_DHCP_POOL_KEY, FE_FIREWALL_KEY, FE_NEIGHBOR_KEY, FE_MONITOR_KEY, MKTXP_USE_COMMENTS_OVER_NAMES,
+                        FE_ROUTE_KEY, FE_DHCP_POOL_KEY, FE_FIREWALL_KEY, FE_NEIGHBOR_KEY, FE_MONITOR_KEY, SSL_CHECK_HOSTNAME,
                         FE_WIRELESS_KEY, FE_WIRELESS_CLIENTS_KEY, FE_CAPSMAN_KEY, FE_CAPSMAN_CLIENTS_KEY, FE_POE_KEY,
                         FE_NETWATCH_KEY, FE_PUBLIC_IP_KEY, FE_USER_KEY, FE_QUEUE_KEY}
 
-    SYSTEM_BOOLEAN_KEYS_YES = set()
-    SYSTEM_BOOLEAN_KEYS_NO = {MKTXP_BANDWIDTH_KEY, MKTXP_VERBOSE_MODE, MKTXP_FETCH_IN_PARALLEL, MKTXP_COMPACT_CONFIG}
+    SYSTEM_BOOLEAN_KEYS_YES = {MKTXP_PERSISTENT_ROUTER_CONNECTION_POOL, MKTXP_PERSISTENT_DHCP_CACHE}
+    SYSTEM_BOOLEAN_KEYS_NO = {MKTXP_BANDWIDTH_KEY, MKTXP_VERBOSE_MODE, MKTXP_FETCH_IN_PARALLEL, MKTXP_COMPACT_CONFIG, MKTXP_PROMETHEUS_HEADERS_DEDUPLICATION}
 
-    STR_KEYS = (HOST_KEY, USER_KEY, PASSWD_KEY, SSL_CA_FILE, FE_REMOTE_DHCP_ENTRY, FE_REMOTE_CAPSMAN_ENTRY)
+    STR_KEYS = (HOST_KEY, USER_KEY, PASSWD_KEY, CREDENTIALS_FILE_KEY, SSL_CA_FILE, FE_REMOTE_DHCP_ENTRY, FE_REMOTE_CAPSMAN_ENTRY, FE_ADDRESS_LIST_KEY, FE_IPV6_ADDRESS_LIST_KEY, FE_CUSTOM_LABELS_KEY, FE_INTERFACE_NAME_FORMAT)
+    MKTXP_STR_KEYS = (MKTXP_BANDWIDTH_TEST_DNS_SERVER,)
     INT_KEYS =  ()
     MKTXP_INT_KEYS = (PORT_KEY, MKTXP_SOCKET_TIMEOUT, MKTXP_INITIAL_DELAY, MKTXP_MAX_DELAY,
                       MKTXP_INC_DIV, MKTXP_BANDWIDTH_TEST_INTERVAL, MKTXP_MIN_COLLECT_INTERVAL,
@@ -195,22 +222,25 @@ class MKTXPConfigKeys:
 
     # MKTXP configs entry names
     DEFAULT_ENTRY_KEY = 'default'
+    MKTXP_LATEST_DEFAULT_ENTRY_KEY = 'new_default_parameters'
     MKTXP_CONFIG_ENTRY_NAME = 'MKTXP'
+    MKTXP_LATEST_SYSTEM_ENTRY_KEY = 'new_system_parameters'
 
 
 class ConfigEntry:
     MKTXPConfigEntry = namedtuple('MKTXPConfigEntry', [MKTXPConfigKeys.ENABLED_KEY, MKTXPConfigKeys.HOST_KEY, MKTXPConfigKeys.PORT_KEY,
-                                                       MKTXPConfigKeys.USER_KEY, MKTXPConfigKeys.PASSWD_KEY,
-                                                       MKTXPConfigKeys.SSL_KEY, MKTXPConfigKeys.NO_SSL_CERTIFICATE, MKTXPConfigKeys.SSL_CERTIFICATE_VERIFY, MKTXPConfigKeys.SSL_CA_FILE, MKTXPConfigKeys.PLAINTEXT_LOGIN_KEY,
+                                                       MKTXPConfigKeys.USER_KEY, MKTXPConfigKeys.PASSWD_KEY, MKTXPConfigKeys.CREDENTIALS_FILE_KEY,
+                                                       MKTXPConfigKeys.SSL_KEY, MKTXPConfigKeys.NO_SSL_CERTIFICATE, MKTXPConfigKeys.SSL_CERTIFICATE_VERIFY, MKTXPConfigKeys.SSL_CHECK_HOSTNAME, MKTXPConfigKeys.SSL_CA_FILE, MKTXPConfigKeys.PLAINTEXT_LOGIN_KEY,
                                                        MKTXPConfigKeys.FE_DHCP_KEY, MKTXPConfigKeys.FE_HEALTH_KEY, MKTXPConfigKeys.FE_PACKAGE_KEY, MKTXPConfigKeys.FE_DHCP_LEASE_KEY, MKTXPConfigKeys.FE_INTERFACE_KEY,
-                                                       MKTXPConfigKeys.FE_MONITOR_KEY, MKTXPConfigKeys.FE_WIRELESS_KEY, MKTXPConfigKeys.FE_WIRELESS_CLIENTS_KEY,
+                                                       MKTXPConfigKeys.FE_MONITOR_KEY, MKTXPConfigKeys.FE_W60G_KEY, MKTXPConfigKeys.FE_WIRELESS_KEY, MKTXPConfigKeys.FE_WIRELESS_CLIENTS_KEY,
                                                        MKTXPConfigKeys.FE_IP_CONNECTIONS_KEY, MKTXPConfigKeys.FE_CONNECTION_STATS_KEY, MKTXPConfigKeys.FE_CAPSMAN_KEY, MKTXPConfigKeys.FE_CAPSMAN_CLIENTS_KEY, MKTXPConfigKeys.FE_POE_KEY, 
-                                                       MKTXPConfigKeys.FE_NETWATCH_KEY, MKTXPConfigKeys.MKTXP_USE_COMMENTS_OVER_NAMES, MKTXPConfigKeys.FE_PUBLIC_IP_KEY,
-                                                       MKTXPConfigKeys.FE_ROUTE_KEY, MKTXPConfigKeys.FE_DHCP_POOL_KEY, MKTXPConfigKeys.FE_FIREWALL_KEY, MKTXPConfigKeys.FE_NEIGHBOR_KEY, MKTXPConfigKeys.FE_DNS_KEY,
-                                                       MKTXPConfigKeys.FE_IPV6_ROUTE_KEY, MKTXPConfigKeys.FE_IPV6_DHCP_POOL_KEY, MKTXPConfigKeys.FE_IPV6_FIREWALL_KEY, MKTXPConfigKeys.FE_IPV6_NEIGHBOR_KEY,                                               
+                                                       MKTXPConfigKeys.FE_NETWATCH_KEY, MKTXPConfigKeys.FE_INTERFACE_NAME_FORMAT, MKTXPConfigKeys.FE_PUBLIC_IP_KEY,
+                                                       MKTXPConfigKeys.FE_ROUTE_KEY, MKTXPConfigKeys.FE_DHCP_POOL_KEY, MKTXPConfigKeys.FE_FIREWALL_KEY, MKTXPConfigKeys.FE_ADDRESS_LIST_KEY, MKTXPConfigKeys.FE_NEIGHBOR_KEY, MKTXPConfigKeys.FE_DNS_KEY,
+                                                       MKTXPConfigKeys.FE_IPV6_ROUTE_KEY, MKTXPConfigKeys.FE_IPV6_DHCP_POOL_KEY, MKTXPConfigKeys.FE_IPV6_FIREWALL_KEY, MKTXPConfigKeys.FE_IPV6_ADDRESS_LIST_KEY, MKTXPConfigKeys.FE_IPV6_NEIGHBOR_KEY,                                               
                                                        MKTXPConfigKeys.FE_USER_KEY, MKTXPConfigKeys.FE_QUEUE_KEY, MKTXPConfigKeys.FE_REMOTE_DHCP_ENTRY, MKTXPConfigKeys.FE_REMOTE_CAPSMAN_ENTRY, MKTXPConfigKeys.FE_CHECK_FOR_UPDATES, MKTXPConfigKeys.FE_BFD_KEY, MKTXPConfigKeys.FE_BGP_KEY,
                                                        MKTXPConfigKeys.FE_KID_CONTROL_DEVICE, MKTXPConfigKeys.FE_KID_CONTROL_DYNAMIC, MKTXPConfigKeys.FE_EOIP_KEY, MKTXPConfigKeys.FE_GRE_KEY, MKTXPConfigKeys.FE_IPIP_KEY, MKTXPConfigKeys.FE_LTE_KEY, MKTXPConfigKeys.FE_IPSEC_KEY, MKTXPConfigKeys.FE_SWITCH_PORT_KEY,
-                                                       MKTXPConfigKeys.FE_ROUTING_STATS_KEY, MKTXPConfigKeys.FE_CERTIFICATE_KEY
+                                                       MKTXPConfigKeys.FE_ROUTING_STATS_KEY, MKTXPConfigKeys.FE_CERTIFICATE_KEY, MKTXPConfigKeys.FE_CONTAINER_KEY,
+                                                       MKTXPConfigKeys.FE_CUSTOM_LABELS_KEY
                                                        ])
     MKTXPSystemEntry = namedtuple('MKTXPSystemEntry', [MKTXPConfigKeys.PORT_KEY, MKTXPConfigKeys.LISTEN_KEY, MKTXPConfigKeys.MKTXP_SOCKET_TIMEOUT,
                                                        MKTXPConfigKeys.MKTXP_INITIAL_DELAY, MKTXPConfigKeys.MKTXP_MAX_DELAY,
@@ -218,7 +248,9 @@ class ConfigEntry:
                                                        MKTXPConfigKeys.MKTXP_VERBOSE_MODE, MKTXPConfigKeys.MKTXP_BANDWIDTH_TEST_INTERVAL,
                                                        MKTXPConfigKeys.MKTXP_MIN_COLLECT_INTERVAL, MKTXPConfigKeys.MKTXP_FETCH_IN_PARALLEL,
                                                        MKTXPConfigKeys.MKTXP_MAX_WORKER_THREADS, MKTXPConfigKeys.MKTXP_MAX_SCRAPE_DURATION, 
-                                                       MKTXPConfigKeys.MKTXP_TOTAL_MAX_SCRAPE_DURATION, MKTXPConfigKeys.MKTXP_COMPACT_CONFIG])
+                                                       MKTXPConfigKeys.MKTXP_TOTAL_MAX_SCRAPE_DURATION, MKTXPConfigKeys.MKTXP_COMPACT_CONFIG, 
+                                                       MKTXPConfigKeys.MKTXP_PROMETHEUS_HEADERS_DEDUPLICATION, MKTXPConfigKeys.MKTXP_PERSISTENT_ROUTER_CONNECTION_POOL,
+                                                       MKTXPConfigKeys.MKTXP_PERSISTENT_DHCP_CACHE, MKTXPConfigKeys.MKTXP_BANDWIDTH_TEST_DNS_SERVER])
 
 
 class OSConfig(metaclass=ABCMeta):
@@ -278,11 +310,34 @@ class CustomConfig(OSConfig):
     def mktxp_user_dir_path(self):
         return FSHelper.full_path(self._user_dir_path)
 
+# Mock system entry to enable running tests
+mockSystemEntry = ConfigEntry.MKTXPSystemEntry(
+            port=MKTXPConfigKeys.DEFAULT_MKTXP_PORT,
+            listen=f'0.0.0.0:{MKTXPConfigKeys.DEFAULT_MKTXP_PORT}',
+            socket_timeout=MKTXPConfigKeys.DEFAULT_MKTXP_SOCKET_TIMEOUT,
+            initial_delay_on_failure=MKTXPConfigKeys.DEFAULT_MKTXP_INITIAL_DELAY,
+            max_delay_on_failure=MKTXPConfigKeys.DEFAULT_MKTXP_MAX_DELAY,
+            delay_inc_div=MKTXPConfigKeys.DEFAULT_MKTXP_INC_DIV,
+            bandwidth=False,
+            verbose_mode=False,
+            bandwidth_test_interval=MKTXPConfigKeys.DEFAULT_MKTXP_BANDWIDTH_TEST_INTERVAL,
+            minimal_collect_interval=MKTXPConfigKeys.DEFAULT_MKTXP_MIN_COLLECT_INTERVAL,
+            fetch_routers_in_parallel=False,
+            max_worker_threads=MKTXPConfigKeys.DEFAULT_MKTXP_MAX_WORKER_THREADS,
+            max_scrape_duration=MKTXPConfigKeys.DEFAULT_MKTXP_MAX_SCRAPE_DURATION,
+            total_max_scrape_duration=MKTXPConfigKeys.DEFAULT_MKTXP_TOTAL_MAX_SCRAPE_DURATION,
+            compact_default_conf_values=False,
+            prometheus_headers_deduplication=False,
+            persistent_router_connection_pool=True,
+            persistent_dhcp_cache=True,
+            bandwidth_test_dns_server=MKTXPConfigKeys.DEFAULT_MKTXP_BANDWIDTH_TEST_DNS_SERVER
+        )
 
 class MKTXPConfigHandler:
     # two-phase init
     def __init__(self):
-        pass
+        # to be re-inisialised properly in the second phase
+        self.system_entry = mockSystemEntry
 
     # two-phase init, to enable custom config
     def __call__(self, os_config = None):
@@ -316,7 +371,8 @@ class MKTXPConfigHandler:
     def registered_entries(self):
         ''' All MKTXP registered entries
         '''
-        return (entry_name for entry_name in self.config.keys() if entry_name != MKTXPConfigKeys.DEFAULT_ENTRY_KEY )
+        return (entry_name for entry_name in self.config.keys() if entry_name not in
+                (MKTXPConfigKeys.DEFAULT_ENTRY_KEY, MKTXPConfigKeys.MKTXP_LATEST_DEFAULT_ENTRY_KEY))
 
     def registered_entry(self, entry_name):
         ''' A specific MKTXP registered entry by name
@@ -339,10 +395,10 @@ class MKTXPConfigHandler:
     def _read_from_disk(self):
         ''' (Force-)Read conf data from disk
         '''
-        self.config = ConfigObj(self.usr_conf_data_path, indent_type = '    ')
+        self.config = ConfigObj(self.usr_conf_data_path, indent_type = '    ', encoding='utf-8')
         self.config.preserve_comments = True
 
-        self._config = ConfigObj(self.mktxp_conf_path, indent_type = '    ')
+        self._config = ConfigObj(self.mktxp_conf_path, indent_type = '    ', encoding='utf-8')
         self._config.preserve_comments = True
 
     def _create_os_path(self, os_path, resource_path):
@@ -355,37 +411,64 @@ class MKTXPConfigHandler:
     def _system_entry_reader(self):
         system_entry_reader = {}
         entry_name = MKTXPConfigKeys.MKTXP_CONFIG_ENTRY_NAME
-        new_keys = []
+        new_keys, new_keys_values = [], {}
+
+        if not self._config.get(MKTXPConfigKeys.MKTXP_CONFIG_ENTRY_NAME):
+            self._config[MKTXPConfigKeys.MKTXP_CONFIG_ENTRY_NAME] = {}
+        if not self._config.get(MKTXPConfigKeys.MKTXP_LATEST_SYSTEM_ENTRY_KEY):
+            self._config[MKTXPConfigKeys.MKTXP_LATEST_SYSTEM_ENTRY_KEY] = {}
 
         for key in MKTXPConfigKeys.MKTXP_INT_KEYS:
             if self._config[entry_name].get(key):
                 system_entry_reader[key] = self._config[entry_name].as_int(key)
+            elif self._config[MKTXPConfigKeys.MKTXP_LATEST_SYSTEM_ENTRY_KEY].get(key):
+                system_entry_reader[key] = self._config[MKTXPConfigKeys.MKTXP_LATEST_SYSTEM_ENTRY_KEY].as_int(key)
             else:
                 system_entry_reader[key] = self._default_value_for_key(key)
                 if key not in (MKTXPConfigKeys.PORT_KEY):  # Port key has been depricated
                     new_keys.append(key) # read from disk next time
+                    new_keys_values[key] = system_entry_reader[key]
 
         for key in MKTXPConfigKeys.SYSTEM_BOOLEAN_KEYS_NO.union(MKTXPConfigKeys.SYSTEM_BOOLEAN_KEYS_YES):
             if self._config[entry_name].get(key) is not None:
                 system_entry_reader[key] = self._config[entry_name].as_bool(key)
+            elif self._config[MKTXPConfigKeys.MKTXP_LATEST_SYSTEM_ENTRY_KEY].get(key) is not None:
+                system_entry_reader[key] = self._config[MKTXPConfigKeys.MKTXP_LATEST_SYSTEM_ENTRY_KEY].as_bool(key)
             else:
                 system_entry_reader[key] = True if key in MKTXPConfigKeys.SYSTEM_BOOLEAN_KEYS_YES else False
                 new_keys.append(key) # read from disk next time
+                new_keys_values[key] = system_entry_reader[key]
 
-        # listen 
+        for key in MKTXPConfigKeys.MKTXP_STR_KEYS:
+            if self._config[entry_name].get(key):
+                system_entry_reader[key] = self._config[entry_name].get(key)
+            elif self._config[MKTXPConfigKeys.MKTXP_LATEST_SYSTEM_ENTRY_KEY].get(key):
+                system_entry_reader[key] = self._config[MKTXPConfigKeys.MKTXP_LATEST_SYSTEM_ENTRY_KEY].get(key)
+            else:
+                system_entry_reader[key] = self._default_value_for_key(key)
+                new_keys.append(key) # read from disk next time
+                new_keys_values[key] = system_entry_reader[key]
+
+        # listen
         if self._config[entry_name].get(MKTXPConfigKeys.LISTEN_KEY):
             system_entry_reader[MKTXPConfigKeys.LISTEN_KEY] = self._config[entry_name].get(MKTXPConfigKeys.LISTEN_KEY)
+        elif self._config[MKTXPConfigKeys.MKTXP_LATEST_SYSTEM_ENTRY_KEY].get(MKTXPConfigKeys.LISTEN_KEY):
+            system_entry_reader[MKTXPConfigKeys.LISTEN_KEY] = self._config[MKTXPConfigKeys.MKTXP_LATEST_SYSTEM_ENTRY_KEY].get(MKTXPConfigKeys.LISTEN_KEY)
         else:
-            system_entry_reader[MKTXPConfigKeys.LISTEN_KEY] = f'0.0.0.0:{system_entry_reader[MKTXPConfigKeys.PORT_KEY]}'
+            system_entry_reader[MKTXPConfigKeys.LISTEN_KEY] = f'0.0.0.0:{system_entry_reader.get(MKTXPConfigKeys.PORT_KEY, MKTXPConfigKeys.DEFAULT_MKTXP_PORT)}'
             new_keys.append(MKTXPConfigKeys.LISTEN_KEY) # read from disk next time
+            new_keys_values[MKTXPConfigKeys.LISTEN_KEY] = system_entry_reader[MKTXPConfigKeys.LISTEN_KEY]
 
         if new_keys:
-            self._config[entry_name] = system_entry_reader
+            self._config[MKTXPConfigKeys.MKTXP_LATEST_SYSTEM_ENTRY_KEY].update(new_keys_values)
+            self._config.comments[MKTXPConfigKeys.MKTXP_LATEST_SYSTEM_ENTRY_KEY] = \
+                ['', '# The section below contains the latest system parameters introduced by MKTXP',
+                 f'# For organizational purposes, you can move these parameters to the [{MKTXPConfigKeys.MKTXP_CONFIG_ENTRY_NAME}] section']
             try:
                 self._config[entry_name].pop(MKTXPConfigKeys.PORT_KEY, None) # Port key has been depricated
                 self._config.write()
                 if self._config[entry_name].as_bool(MKTXPConfigKeys.MKTXP_VERBOSE_MODE):
-                    print(f'Updated system entry {entry_name} with new system keys {new_keys}')    
+                    print(f'Updated system entry {entry_name} with new system keys {new_keys}')
             except Exception as exc:
                 print(f'Error updating system entry {entry_name} with new system keys {new_keys}: {exc}')
                 print('Please update _mktxp.conf to its latest version manually')
@@ -449,49 +532,104 @@ class MKTXPConfigHandler:
 
     def _default_config_entry_reader(self):
         default_config_entry_reader = {}
-        new_keys = []
+        new_keys, new_keys_values = [], {}
+        
+        # Track if the section was created in this run
+        created_latest_section = False
 
         if not self.config.get(MKTXPConfigKeys.DEFAULT_ENTRY_KEY):
             self.config[MKTXPConfigKeys.DEFAULT_ENTRY_KEY] = {}
+        if not self.config.get(MKTXPConfigKeys.MKTXP_LATEST_DEFAULT_ENTRY_KEY):
+            self.config[MKTXPConfigKeys.MKTXP_LATEST_DEFAULT_ENTRY_KEY] = {}
+            created_latest_section = True
+
+        # Migrate legacy use_comments_over_names to interface_name_format FIRST
+        # This ensures the migrated value is available for the normal config processing below
+        migrated_entries = []
+        for entry_name in list(self.config.keys()):
+            if entry_name == MKTXPConfigKeys.MKTXP_LATEST_DEFAULT_ENTRY_KEY:
+                continue
+            if self.config[entry_name].get(MKTXPConfigKeys.MKTXP_USE_COMMENTS_OVER_NAMES) is not None:
+                # Migrate the legacy option
+                legacy_value = self.config[entry_name].as_bool(MKTXPConfigKeys.MKTXP_USE_COMMENTS_OVER_NAMES)
+                new_value = 'comment' if legacy_value else 'name'
+                self.config[entry_name][MKTXPConfigKeys.FE_INTERFACE_NAME_FORMAT] = new_value
+                # Remove the legacy key
+                self.config[entry_name].pop(MKTXPConfigKeys.MKTXP_USE_COMMENTS_OVER_NAMES, None)
+                migrated_entries.append(entry_name)
+        
+        if migrated_entries:
+            # Remove empty new_default_parameters section if it exists
+            if self.config.get(MKTXPConfigKeys.MKTXP_LATEST_DEFAULT_ENTRY_KEY) and \
+               len(self.config[MKTXPConfigKeys.MKTXP_LATEST_DEFAULT_ENTRY_KEY]) == 0:
+                del self.config[MKTXPConfigKeys.MKTXP_LATEST_DEFAULT_ENTRY_KEY]
+            
+            try:
+                self.config.write()
+                print(f'Migrated use_comments_over_names to interface_name_format for entries: {", ".join(migrated_entries)}')
+            except Exception as exc:
+                print(f'Error migrating use_comments_over_names to interface_name_format: {exc}')
+                print('Please update mktxp.conf manually')
 
         for key in MKTXPConfigKeys.BOOLEAN_KEYS_NO.union(MKTXPConfigKeys.BOOLEAN_KEYS_YES):
             if self.config[MKTXPConfigKeys.DEFAULT_ENTRY_KEY].get(key) is not None:
                 default_config_entry_reader[key] = self.config[MKTXPConfigKeys.DEFAULT_ENTRY_KEY].as_bool(key)
+            elif self.config[MKTXPConfigKeys.MKTXP_LATEST_DEFAULT_ENTRY_KEY].get(key) is not None:
+                default_config_entry_reader[key] = self.config[MKTXPConfigKeys.MKTXP_LATEST_DEFAULT_ENTRY_KEY].as_bool(key)
             else:
                 default_config_entry_reader[key] = True if key in MKTXPConfigKeys.BOOLEAN_KEYS_YES else False
                 new_keys.append(key) # read from disk next time
+                new_keys_values[key] = default_config_entry_reader[key]
 
         for key in MKTXPConfigKeys.STR_KEYS:
             if self.config[MKTXPConfigKeys.DEFAULT_ENTRY_KEY].get(key) is not None:
                 default_config_entry_reader[key] = self.config[MKTXPConfigKeys.DEFAULT_ENTRY_KEY].get(key)
+            elif self.config[MKTXPConfigKeys.MKTXP_LATEST_DEFAULT_ENTRY_KEY].get(key) is not None:
+                default_config_entry_reader[key] = self.config[MKTXPConfigKeys.MKTXP_LATEST_DEFAULT_ENTRY_KEY].get(key)
             else:
                 default_config_entry_reader[key] = self._default_value_for_key(key)
                 new_keys.append(key) # read from disk next time
+                new_keys_values[key] = default_config_entry_reader[key]
 
         for key in MKTXPConfigKeys.INT_KEYS:
             if self.config[MKTXPConfigKeys.DEFAULT_ENTRY_KEY].get(key):
                 default_config_entry_reader[key] = self.config[MKTXPConfigKeys.DEFAULT_ENTRY_KEY].as_int(key)
+            elif self.config[MKTXPConfigKeys.MKTXP_LATEST_DEFAULT_ENTRY_KEY].get(key):
+                default_config_entry_reader[key] = self.config[MKTXPConfigKeys.MKTXP_LATEST_DEFAULT_ENTRY_KEY].as_int(key)
             else:
                 default_config_entry_reader[key] = self._default_value_for_key(key)
                 new_keys.append(key) # read from disk next time
+                new_keys_values[key] = default_config_entry_reader[key]
 
         # port
         if self.config[MKTXPConfigKeys.DEFAULT_ENTRY_KEY].get(MKTXPConfigKeys.PORT_KEY):
             default_config_entry_reader[MKTXPConfigKeys.PORT_KEY] = self.config[MKTXPConfigKeys.DEFAULT_ENTRY_KEY].as_int(MKTXPConfigKeys.PORT_KEY)
+        elif self.config[MKTXPConfigKeys.MKTXP_LATEST_DEFAULT_ENTRY_KEY].get(MKTXPConfigKeys.PORT_KEY):
+            default_config_entry_reader[MKTXPConfigKeys.PORT_KEY] = self.config[MKTXPConfigKeys.MKTXP_LATEST_DEFAULT_ENTRY_KEY].as_int(MKTXPConfigKeys.PORT_KEY)
         else:
             default_config_entry_reader[MKTXPConfigKeys.PORT_KEY] = self._default_value_for_key(
                 MKTXPConfigKeys.SSL_KEY, default_config_entry_reader[MKTXPConfigKeys.SSL_KEY])
             new_keys.append(MKTXPConfigKeys.PORT_KEY) # read from disk next time
-        
+            new_keys_values[MKTXPConfigKeys.PORT_KEY] = default_config_entry_reader[MKTXPConfigKeys.PORT_KEY]
+
         if new_keys:
-            self.config[MKTXPConfigKeys.DEFAULT_ENTRY_KEY] = default_config_entry_reader
+            self.config[MKTXPConfigKeys.MKTXP_LATEST_DEFAULT_ENTRY_KEY].update(new_keys_values)
+            self.config.comments[MKTXPConfigKeys.MKTXP_LATEST_DEFAULT_ENTRY_KEY] = \
+                ['', '# The section below contains the latest default parameters introduced by MKTXP',
+                 f'# For organizational purposes, you can move these parameters to the [{MKTXPConfigKeys.DEFAULT_ENTRY_KEY}] section']
             try:
                 self.config.write()
                 if self._config[MKTXPConfigKeys.MKTXP_CONFIG_ENTRY_NAME].as_bool(MKTXPConfigKeys.MKTXP_VERBOSE_MODE):
-                    print(f'Updated default router entry with new feature keys {new_keys}')                    
+                    print(f'Updated default router entry with new feature keys {new_keys}')
             except Exception as exc:
                 print(f'Error updating default router entry with new feature keys {new_keys}: {exc}')
                 print('Please update mktxp.conf to its latest version manually')
+        else:
+            # Only clean up if the section was created and is now empty after migration
+            if created_latest_section and \
+               self.config.get(MKTXPConfigKeys.MKTXP_LATEST_DEFAULT_ENTRY_KEY) is not None and \
+               len(self.config[MKTXPConfigKeys.MKTXP_LATEST_DEFAULT_ENTRY_KEY]) == 0:
+                del self.config[MKTXPConfigKeys.MKTXP_LATEST_DEFAULT_ENTRY_KEY]
 
         return default_config_entry_reader
 
@@ -501,10 +639,15 @@ class MKTXPConfigHandler:
             MKTXPConfigKeys.HOST_KEY: lambda _: MKTXPConfigKeys.DEFAULT_HOST_KEY,
             MKTXPConfigKeys.USER_KEY: lambda _: MKTXPConfigKeys.DEFAULT_USER_KEY,
             MKTXPConfigKeys.PASSWD_KEY: lambda _: MKTXPConfigKeys.DEFAULT_PASSWORD_KEY,
+            MKTXPConfigKeys.CREDENTIALS_FILE_KEY: lambda _: MKTXPConfigKeys.DEFAULT_CREDENTIALS_FILE_KEY,
+            MKTXPConfigKeys.FE_CUSTOM_LABELS_KEY: lambda _: MKTXPConfigKeys.DEFAULT_FE_CUSTOM_LABELS_KEY,
             MKTXPConfigKeys.PORT_KEY: lambda _: MKTXPConfigKeys.DEFAULT_MKTXP_PORT,
             MKTXPConfigKeys.SSL_CA_FILE: lambda _: MKTXPConfigKeys.DEFAULT_SSL_CA_FILE,
             MKTXPConfigKeys.FE_REMOTE_DHCP_ENTRY:  lambda _: MKTXPConfigKeys.DEFAULT_FE_REMOTE_DHCP_ENTRY,
             MKTXPConfigKeys.FE_REMOTE_CAPSMAN_ENTRY:  lambda _: MKTXPConfigKeys.DEFAULT_FE_REMOTE_CAPSMAN_ENTRY,
+            MKTXPConfigKeys.FE_ADDRESS_LIST_KEY: lambda _: MKTXPConfigKeys.DEFAULT_FE_ADDRESS_LIST_KEY,
+            MKTXPConfigKeys.FE_IPV6_ADDRESS_LIST_KEY: lambda _: MKTXPConfigKeys.DEFAULT_FE_IPV6_ADDRESS_LIST_KEY,
+            MKTXPConfigKeys.FE_INTERFACE_NAME_FORMAT: lambda _: MKTXPConfigKeys.DEFAULT_FE_INTERFACE_NAME_FORMAT,
             MKTXPConfigKeys.MKTXP_SOCKET_TIMEOUT: lambda _: MKTXPConfigKeys.DEFAULT_MKTXP_SOCKET_TIMEOUT,
             MKTXPConfigKeys.MKTXP_INITIAL_DELAY: lambda _: MKTXPConfigKeys.DEFAULT_MKTXP_INITIAL_DELAY,
             MKTXPConfigKeys.MKTXP_MAX_DELAY: lambda _: MKTXPConfigKeys.DEFAULT_MKTXP_MAX_DELAY,
@@ -514,6 +657,8 @@ class MKTXPConfigHandler:
             MKTXPConfigKeys.MKTXP_MAX_WORKER_THREADS: lambda _: MKTXPConfigKeys.DEFAULT_MKTXP_MAX_WORKER_THREADS,
             MKTXPConfigKeys.MKTXP_MAX_SCRAPE_DURATION: lambda _: MKTXPConfigKeys.DEFAULT_MKTXP_MAX_SCRAPE_DURATION,
             MKTXPConfigKeys.MKTXP_TOTAL_MAX_SCRAPE_DURATION: lambda _: MKTXPConfigKeys.DEFAULT_MKTXP_TOTAL_MAX_SCRAPE_DURATION,
+            MKTXPConfigKeys.MKTXP_PERSISTENT_DHCP_CACHE: lambda _: True,
+            MKTXPConfigKeys.MKTXP_BANDWIDTH_TEST_DNS_SERVER: lambda _: MKTXPConfigKeys.DEFAULT_MKTXP_BANDWIDTH_TEST_DNS_SERVER,
         }[key](value)
 
 

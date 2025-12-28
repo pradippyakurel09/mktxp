@@ -13,6 +13,7 @@
 
 
 from mktxp.datasource.base_ds import BaseDSProcessor
+from mktxp.flow.processor.output import BaseOutputProcessor
 
 
 class NetwatchMetricsDataSource:
@@ -23,18 +24,22 @@ class NetwatchMetricsDataSource:
         if metric_labels is None:
             metric_labels = []                
         try:
-            netwatch_records = router_entry.api_connection.router_api().get_resource('/tool/netwatch').get(disabled='false')
-            if 'name' in metric_labels:
-                for netwatch_record in netwatch_records:
-                    comment = netwatch_record.get('comment')
-                    host = netwatch_record.get('host')        
-                    if comment:
-                        netwatch_record['name'] = f'{host} ({comment[0:20]})' if not router_entry.config_entry.use_comments_over_names else comment
-                    else:
-                        netwatch_record['name'] = host
+            netwatch_records = router_entry.api_connection.router_api().get_resource('/tool/netwatch').get()
+            netwatch_records = [entry for entry in netwatch_records if entry.get('disabled', 'false') != 'true']
 
+            # since addition in ROS v7.14, name is supported natively
+            for netwatch_record in netwatch_records:
+                # Determine the primary identifier: use 'name' if set, fallback to 'host'
+                name = netwatch_record.get('name') or netwatch_record.get('host')
+                comment = netwatch_record.get('comment')
+
+                # Apply the centralized formatting
+                netwatch_record['name'] = BaseOutputProcessor.format_interface_name(
+                    name,
+                    comment,
+                    router_entry.config_entry.interface_name_format
+                )
             return BaseDSProcessor.trimmed_records(router_entry, router_records = netwatch_records, translation_table = translation_table, metric_labels = metric_labels)
         except Exception as exc:
             print(f'Error getting Netwatch info from router {router_entry.router_name}@{router_entry.config_entry.hostname}: {exc}')
             return None
-

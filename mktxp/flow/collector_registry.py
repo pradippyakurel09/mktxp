@@ -21,9 +21,11 @@ from mktxp.collector.interface_collector import InterfaceCollector
 from mktxp.collector.health_collector import HealthCollector
 from mktxp.collector.identity_collector import IdentityCollector
 from mktxp.collector.ipsec_collector import IPSecCollector
+from mktxp.collector.address_list_collector import AddressListCollector
 from mktxp.collector.public_ip_collector import PublicIPAddressCollector
 from mktxp.collector.neighbor_collector import NeighborCollector
 from mktxp.collector.monitor_collector import MonitorCollector
+from mktxp.collector.w60g_collector import W60gCollector
 from mktxp.collector.poe_collector import POECollector
 from mktxp.collector.netwatch_collector import NetwatchCollector
 from mktxp.collector.pool_collector import PoolCollector
@@ -48,6 +50,7 @@ from mktxp.collector.lte_collector import LTECollector
 from mktxp.collector.switch_collector import SwitchPortCollector
 from mktxp.collector.certificate_collector import CertificateCollector
 from mktxp.collector.dns_collector import DNSCollector
+from mktxp.collector.container_collector import ContainerCollector
 
 class CollectorRegistry:
     ''' MKTXP Collectors Registry
@@ -70,11 +73,13 @@ class CollectorRegistry:
         self.register(CollectorKeys.DHCP_COLLECTOR, DHCPCollector.collect)
         self.register(CollectorKeys.IP_CONNECTION_COLLECTOR, IPConnectionCollector.collect)
         self.register(CollectorKeys.IPSEC_COLLECTOR, IPSecCollector.collect)
+        self.register(CollectorKeys.ADDRESS_LIST_COLLECTOR, AddressListCollector.collect)
         self.register(CollectorKeys.POOL_COLLECTOR, PoolCollector.collect)
         self.register(CollectorKeys.INTERFACE_COLLECTOR, InterfaceCollector.collect)
 
         self.register(CollectorKeys.FIREWALL_COLLECTOR, FirewallCollector.collect)
         self.register(CollectorKeys.MONITOR_COLLECTOR, MonitorCollector.collect)
+        self.register(CollectorKeys.W60G_COLLECTOR, W60gCollector.collect)
         self.register(CollectorKeys.POE_COLLECTOR, POECollector.collect)
         self.register(CollectorKeys.NETWATCH_COLLECTOR, NetwatchCollector.collect)
         self.register(CollectorKeys.ROUTE_COLLECTOR, RouteCollector.collect)
@@ -94,6 +99,8 @@ class CollectorRegistry:
         self.register(CollectorKeys.IPIP_COLLECTOR, IPIPCollector.collect)
         self.register(CollectorKeys.LTE_COLLECTOR, LTECollector.collect)
         self.register(CollectorKeys.SWITCH_PORT_COLLECTOR, SwitchPortCollector.collect)
+
+        self.register(CollectorKeys.CONTAINER_COLLECTOR, ContainerCollector.collect)
 
         self.register(CollectorKeys.ROUTING_STATS_COLLECTOR, RoutingStatsCollector.collect)
         self.register(CollectorKeys.CERTIFICATE_COLLECTOR, CertificateCollector.collect)

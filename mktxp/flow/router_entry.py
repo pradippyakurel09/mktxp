@@ -61,6 +61,7 @@ class RouterEntry:
                             CollectorKeys.POOL_COLLECTOR: 0,
                             CollectorKeys.IP_CONNECTION_COLLECTOR: 0,
                             CollectorKeys.IPSEC_COLLECTOR: 0,
+                            CollectorKeys.ADDRESS_LIST_COLLECTOR: 0,
                             CollectorKeys.INTERFACE_COLLECTOR: 0,
                             CollectorKeys.FIREWALL_COLLECTOR: 0,
                             CollectorKeys.MONITOR_COLLECTOR: 0,
@@ -82,7 +83,9 @@ class RouterEntry:
                             CollectorKeys.LTE_COLLECTOR: 0,
                             CollectorKeys.SWITCH_PORT_COLLECTOR: 0,
                             CollectorKeys.MKTXP_COLLECTOR: 0,
-                            CollectorKeys.CERTIFICATE_COLLECTOR: 0
+                            CollectorKeys.CERTIFICATE_COLLECTOR: 0,
+                            CollectorKeys.CONTAINER_COLLECTOR: 0,
+                            CollectorKeys.W60G_COLLECTOR: 0
                             }         
         self._dhcp_entry = None        
         self._dhcp_records = {}
@@ -127,7 +130,7 @@ class RouterEntry:
 
     @property
     def dhcp_records(self):
-        return (entry.record for key, entry in  self._dhcp_records.items() if entry.type == 'mac_address') \
+        return [entry.record for key, entry in  self._dhcp_records.items() if entry.type == 'mac_address'] \
                                                                                 if self._dhcp_records else None   
     @dhcp_records.setter
     def dhcp_records(self, dhcp_records):
@@ -176,7 +179,7 @@ class RouterEntry:
                 print (f'{exc}')
 
     def is_ready(self):           
-        self.is_done() #flush caches, just in case
+        # self.is_done() #flush caches, just in case
         is_ready = False
 
         if self.connection_status() in (RouterEntryConnectionState.NOT_CONNECTED, RouterEntryConnectionState.PARTIALLY_CONNECTED):
@@ -187,7 +190,15 @@ class RouterEntry:
         return is_ready
 
     def is_done(self):
-        self._dhcp_records = {}
+        if not config_handler.system_entry.persistent_router_connection_pool:
+            self.api_connection.disconnect()
+            if self._dhcp_entry:
+                self._dhcp_entry.api_connection.disconnect()
+            if self._capsman_entry:
+                self._capsman_entry.api_connection.disconnect()
+
+        if not config_handler.system_entry.persistent_dhcp_cache:
+            self._dhcp_records = {}
         self._wireless_type = RouterEntryWirelessType.NONE
 
 DHCPCacheEntry = namedtuple('DHCPCacheEntry', ['type', 'record'])
